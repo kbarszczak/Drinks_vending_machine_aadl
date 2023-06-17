@@ -1,18 +1,66 @@
 package DrinkMachine
 public
 	
+with Hardware;
+with Software;
+	
 system DrinkMachineSystem
-	
-	
 end DrinkMachineSystem;
 
-
 system implementation DrinkMachineSystem.impl
-	
-	
-	
+	subcomponents
+		-- main panel components
+		MainBus: bus Hardware::MainBus.impl;
+		MainMem: memory Hardware::MainProcMemory.impl;
+		MainProc: processor Hardware::MainProc.impl;
+		Panel: device Hardware::Panel.impl;
+		MainController: process Software::MainController;
+		
+		-- payment components
+		PayBus: bus Hardware::PayBus.impl;
+		PayMem: memory Hardware::PayProcMemory.impl;
+		PayProc: processor Hardware::PayProc.impl;
+		CashIn: device Hardware::CashIn.impl;
+		CashOut: device Hardware::CashOut.impl;
+		Card: device Hardware::CardReader.impl;
+		PayController: process Software::PayController;
+		
+		-- drink components
+		DrinkBus: bus Hardware::DrinkBus.impl;
+		DrinkMem: memory Hardware::DrinkProcMemory.impl;
+		DrinkProc: processor Hardware::DrinkProc.impl;
+		GlassSens: device Hardware::GlassSensor.impl;
+		IngredientSens: device Hardware::IngredientSensor.impl;
+		ShakerDev: device Hardware::Shaker.impl;
+		FeederDev: device Hardware::Feeder.impl;
+		DrinkController: process Software::DrinkController;
+		
+	connections
+		BM2Mem: bus access MainBus -> MainMem.BAM;
+		BM2Proc: bus access MainBus -> MainProc.BAM;
+		BM2Panel: bus access MainBus -> Panel.BAM;
+		
+		BP2Mem: bus access PayBus -> PayMem.BAP;
+		BP2Proc: bus access PayBus -> PayProc.BAP;
+		BP2CashIn: bus access PayBus -> CashIn.BAP;
+		BP2CashOut: bus access PayBus -> CashOut.BAP;
+		BP2Card: bus access PayBus -> Card.BAP;
+		BP2MProc: bus access PayBus -> MainProc.BAP;
+		
+		BD2Mem: bus access DrinkBus -> DrinkMem.BAD;
+		BD2Proc: bus access DrinkBus -> DrinkProc.BAD;
+		BD2GSens: bus access DrinkBus -> GlassSens.BAD;
+		BD2ISens: bus access DrinkBus -> IngredientSens.BAD;
+		BD2SDev: bus access DrinkBus -> ShakerDev.BAD;
+		BD2FDev: bus access DrinkBus -> FeederDev.BAD;
+		BD2MProc: bus access DrinkBus -> MainProc.BAD;
+		
+		M2PMet: port MainController.PayModMethod -> PayController.Method;
+		M2PAmt: port MainController.PayModAmount -> PayController.Amount;
+		P2MStat: port PayController.Finished -> MainController.Paid;
+		
 end DrinkMachineSystem.impl;
 	
-	
-	
 end DrinkMachine;
+
+

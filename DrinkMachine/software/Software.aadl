@@ -1,0 +1,62 @@
+package Software
+public
+	
+-- Main controller components
+process MainController
+	features
+		-- in ports
+		PayMethod: in data port;
+		NumDrink: in data port;
+		IngrStatus: in data port;
+		DrinkPrice: in data port;
+		Paid: in event port;
+		DrinkReady: in event port;
+		
+		-- out ports
+		IngrCheck: out data port;
+		PayModMethod: out data port;
+		PayModAmount: out data port;
+		MakeDrink: out event port;
+		Finished: out event port;
+
+end MainController;
+
+process implementation MainController.impl
+end MainController.impl;
+
+-- Payment controller components
+
+process PayController
+	features
+		-- in ports
+		Method: in data port;
+		Amount: in data port;
+		FinishedDev: in event port;
+		CardData: in data port;
+		CashData: in data port;
+		CashChange: out data port;
+		
+		-- out ports
+		CardReq: out data port;
+		CashReq: out data port;
+		CardChangeReq: out data port;
+		Finished: out event port;
+		
+end PayController;
+
+process implementation PayController.impl
+end PayController.impl;
+
+
+-- Drink controller components
+process DrinkController
+	features
+		MainIn: in data port;
+		MainOut: out data port;
+	
+end DrinkController;
+
+process implementation DrinkController.impl
+end DrinkController.impl;
+	
+end Software;
