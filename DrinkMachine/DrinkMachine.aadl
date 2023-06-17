@@ -59,6 +59,22 @@ system implementation DrinkMachineSystem.impl
 		M2PAmt: port MainController.PayModAmount -> PayController.Amount;
 		P2MStat: port PayController.Finished -> MainController.Paid;
 		
+		P2MCPay: port Panel.PayMethod -> MainController.PayMethod;
+		P2MCNumber: port Panel.NumDrink -> MainController.NumDrink;
+		MC2PFinish: port MainController.Finished -> Panel.DrinkReady;
+		
+		PC2CReader: port PayController.CardReq -> Card.CardReq;
+		PC2CReaderOut: port Card.CashAmount -> PayController.CardData;
+		PC2CIn: port PayController.CashReq -> CashIn.CashReq;
+		PC2CInOut: port CashIn.CashAmount -> PayController.CashData;
+		PC2COutChange: port PayController.CashChange -> CashOut.CashOut;
+		
+		M2DCheckDrink: port MainController.CheckDrink -> DrinkController.CheckDrink;
+		M2DMakeDrink: port MainController.MakeDrink -> DrinkController.MakeDrink;
+		D2MPrice: port DrinkController.DrinkPrice -> MainController.DrinkPrice;
+		D2MIngrStatus: port DrinkController.DrinkIngrStatus -> MainController.DrinkIngrStatus;
+		D2MReady: port DrinkController.DrinkReady -> MainController.DrinkReady;
+		
 end DrinkMachineSystem.impl;
 	
 end DrinkMachine;

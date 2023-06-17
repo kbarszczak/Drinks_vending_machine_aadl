@@ -5,19 +5,19 @@ public
 process MainController
 	features
 		-- in ports
-		PayMethod: in data port;
-		NumDrink: in data port;
-		IngrStatus: in data port;
-		DrinkPrice: in data port;
-		Paid: in event port;
-		DrinkReady: in event port;
+		PayMethod: in data port;--
+		NumDrink: in data port;--
+		Paid: in event port;--
+		DrinkIngrStatus: in event port;--
+		DrinkPrice: in data port;--
+		DrinkReady: in event port;--
 		
 		-- out ports
-		IngrCheck: out data port;
-		PayModMethod: out data port;
-		PayModAmount: out data port;
-		MakeDrink: out event port;
-		Finished: out event port;
+		CheckDrink: out data port;--
+		PayModMethod: out data port;--
+		PayModAmount: out data port;--
+		MakeDrink: out data port;--
+		Finished: out event port;--
 
 end MainController;
 
@@ -29,18 +29,16 @@ end MainController.impl;
 process PayController
 	features
 		-- in ports
-		Method: in data port;
-		Amount: in data port;
-		FinishedDev: in event port;
-		CardData: in data port;
-		CashData: in data port;
-		CashChange: out data port;
+		Method: in data port;--
+		Amount: in data port;--
+		CardData: in data port; --
+		CashData: in data port; --
 		
 		-- out ports
-		CardReq: out data port;
-		CashReq: out data port;
-		CardChangeReq: out data port;
-		Finished: out event port;
+		CardReq: out data port;--
+		CashReq: out data port;--
+		CashChange: out data port; --
+		Finished: out event port;--
 		
 end PayController;
 
@@ -51,8 +49,15 @@ end PayController.impl;
 -- Drink controller components
 process DrinkController
 	features
-		MainIn: in data port;
-		MainOut: out data port;
+		-- in ports
+		CheckDrink: in data port;--
+		MakeDrink: in data port;--
+		
+		-- out ports
+		DrinkIngrStatus: out event port;--
+		DrinkReady: out event port;--
+		DrinkPrice: out data port;--
+		
 	
 end DrinkController;
 

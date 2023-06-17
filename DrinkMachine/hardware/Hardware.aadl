@@ -28,14 +28,16 @@ end MainProc.impl;
 
 device Panel
 	features
-		BAM: requires bus access MainBus.impl;
+		PayMethod: out data port; --
+		NumDrink: out data port; --
+		DrinkReady: in event port; --
+		BAM: requires bus access MainBus.impl; --
 end Panel;
 
 device implementation Panel.impl
 end Panel.impl;
 
 -- Payment controller components
-
 bus PayBus	
 end PayBus;
 
@@ -60,6 +62,8 @@ end PayProc.impl;
 
 device CardReader
 	features
+		CardReq: in data port;--
+		CashAmount: out data port; --s
 		BAP: requires bus access PayBus.impl;
 end CardReader;
 
@@ -68,6 +72,8 @@ end CardReader.impl;
 
 device CashIn
 	features
+		CashReq: in data port; --
+		CashAmount: out data port; --
 		BAP: requires bus access PayBus.impl;
 end CashIn;
 
@@ -76,6 +82,7 @@ end CashIn.impl;
 
 device CashOut
 	features
+		CashOut: in data port; --
 		BAP: requires bus access PayBus.impl;
 end CashOut;
 
