@@ -115,6 +115,8 @@ end DrinkProc.impl;
 
 device GlassSensor
 	features
+		GlassCheck: in data port;--
+		GlassStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end GlassSensor;
 
@@ -123,6 +125,8 @@ end GlassSensor.impl;
 
 device IngredientSensor
 	features
+		CheckStatus: in data port;--
+		IngrStatus: out data port;--
 		BAD: requires bus access DrinkBus.impl;
 end IngredientSensor;
 
@@ -131,6 +135,8 @@ end IngredientSensor.impl;
 
 device Shaker
 	features
+		ShakeIngr: in data port;--
+		ShakeStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end Shaker;
 
@@ -139,6 +145,8 @@ end Shaker.impl;
 
 device Feeder
 	features
+		FeedIngr: in data port;--
+		FeedStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end Feeder;
 

@@ -14,7 +14,7 @@ system implementation DrinkMachineSystem.impl
 		MainMem: memory Hardware::MainProcMemory.impl;
 		MainProc: processor Hardware::MainProc.impl;
 		Panel: device Hardware::Panel.impl;
-		MainController: process Software::MainController;
+		MainController: process Software::MainController.impl;
 		
 		-- payment components
 		PayBus: bus Hardware::PayBus.impl;
@@ -23,7 +23,7 @@ system implementation DrinkMachineSystem.impl
 		CashIn: device Hardware::CashIn.impl;
 		CashOut: device Hardware::CashOut.impl;
 		Card: device Hardware::CardReader.impl;
-		PayController: process Software::PayController;
+		PayController: process Software::PayController.impl;
 		
 		-- drink components
 		DrinkBus: bus Hardware::DrinkBus.impl;
@@ -33,7 +33,7 @@ system implementation DrinkMachineSystem.impl
 		IngredientSens: device Hardware::IngredientSensor.impl;
 		ShakerDev: device Hardware::Shaker.impl;
 		FeederDev: device Hardware::Feeder.impl;
-		DrinkController: process Software::DrinkController;
+		DrinkController: process Software::DrinkController.impl;
 		
 	connections
 		BM2Mem: bus access MainBus -> MainMem.BAM;
@@ -74,6 +74,15 @@ system implementation DrinkMachineSystem.impl
 		D2MPrice: port DrinkController.DrinkPrice -> MainController.DrinkPrice;
 		D2MIngrStatus: port DrinkController.DrinkIngrStatus -> MainController.DrinkIngrStatus;
 		D2MReady: port DrinkController.DrinkReady -> MainController.DrinkReady;
+		
+		D2IngrSens: port DrinkController.CheckIngrStatus -> IngredientSens.CheckStatus;
+		IngrSens2D: port IngredientSens.IngrStatus -> DrinkController.IngrStatus;
+		D2GlassSens: port DrinkController.CheckGlass -> GlassSens.GlassCheck;
+		GlassSens2D: port GlassSens.GlassStatus -> DrinkController.GlassStatus;
+		D2Feeder: port DrinkController.FeedIngr -> FeederDev.FeedIngr;
+		Feeder2D: port FeederDev.FeedStatus -> DrinkController.FeedStatus;
+		D2Shaker: port DrinkController.ShakeIngr -> ShakerDev.ShakeIngr;
+		Shaker2D: port ShakerDev.ShakeStatus -> DrinkController.ShakeStatus;
 		
 end DrinkMachineSystem.impl;
 	

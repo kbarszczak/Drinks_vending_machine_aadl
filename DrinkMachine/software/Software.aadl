@@ -22,7 +22,65 @@ process MainController
 end MainController;
 
 process implementation MainController.impl
+	subcomponents
+		PayThread: thread PaymentThread.impl;
+		DrinkThread: thread DrinkExecutorThread.impl;
+		DrinkVerifier: thread DrinkVerifierThread.impl;
+		
+	connections
+		NumDrink2DV: port NumDrink -> DrinkVerifier.NumDrink;
+		DV2CheckDrink: port DrinkVerifier.DrinkCheck -> CheckDrink;
+		DrinkPrice2DV: port DrinkPrice -> DrinkVerifier.DrinkPrice;
+		DrinkIngrStatus2DV: port DrinkIngrStatus -> DrinkVerifier.DrinkIngrStatus;
+		DrinkStatusOut: port DrinkVerifier.DrinkInfo -> PayThread.DrinkInfo;
+		P2Amout: port PayThread.Price -> PayModAmount;
+		PayMethod2P: port PayMethod -> PayThread.PanelMethod;
+		P2Method: port PayThread.Method -> PayModMethod;
+		Pait2P: port Paid -> PayThread.Paid;
+		P2D: port PayThread.PrepareDrink -> DrinkThread.Prepare;
+		DrinkStatusOutDrink: port DrinkVerifier.DrinkInfo -> DrinkThread.DrinkInfo;
+		D2Make: port DrinkThread.DrinkMake -> MakeDrink;
+		DrinkReady2D: port DrinkReady -> DrinkThread.DrinkFinished;
+		D2Finished: port DrinkThread.Finalize -> Finished;
+		
 end MainController.impl;
+
+thread PaymentThread
+	features
+		DrinkInfo: in data port;
+		PanelMethod: in data port;
+		Price: out data port;
+		Method: out data port;
+		Paid: in event port;
+		PrepareDrink: out event port;
+end PaymentThread;
+
+thread implementation PaymentThread.impl
+end PaymentThread.impl;
+
+thread DrinkExecutorThread
+	features
+		Prepare: in event port;
+		DrinkInfo: in data port;
+		DrinkMake: out data port;
+		DrinkFinished: in event port;
+		Finalize: out event port;
+end DrinkExecutorThread;
+
+thread implementation DrinkExecutorThread.impl
+end DrinkExecutorThread.impl;
+
+thread DrinkVerifierThread
+	features
+		NumDrink: in data port;
+		DrinkIngrStatus: in event port;
+		DrinkPrice: in data port;
+		DrinkCheck: out data port;
+		DrinkInfo: out data port;
+end DrinkVerifierThread;
+
+thread implementation DrinkVerifierThread.impl
+end DrinkVerifierThread.impl;
 
 -- Payment controller components
 
@@ -43,8 +101,29 @@ process PayController
 end PayController;
 
 process implementation PayController.impl
+	subcomponents
+		PaymentProcessing: thread PaymentProcessingThread.impl;
+		Cash: thread CashThread.impl;
+		Card: thread CardThread.impl;
 end PayController.impl;
 
+thread PaymentProcessingThread
+end PaymentProcessingThread;
+
+thread implementation PaymentProcessingThread.impl
+end PaymentProcessingThread.impl;
+
+thread CashThread
+end CashThread;
+
+thread implementation CashThread.impl
+end CashThread.impl;
+
+thread CardThread
+end CardThread;
+
+thread implementation CardThread.impl
+end CardThread.impl;
 
 -- Drink controller components
 process DrinkController
@@ -52,16 +131,45 @@ process DrinkController
 		-- in ports
 		CheckDrink: in data port;--
 		MakeDrink: in data port;--
+		IngrStatus: in data port;--
+		FeedStatus: in event port;--
+		ShakeStatus: in event port;--
+		GlassStatus: in event port;--
 		
 		-- out ports
 		DrinkIngrStatus: out event port;--
 		DrinkReady: out event port;--
 		DrinkPrice: out data port;--
+		CheckIngrStatus: out data port;--
+		FeedIngr: out data port;--
+		ShakeIngr: out data port;--
+		CheckGlass: out data port;--
 		
-	
 end DrinkController;
 
 process implementation DrinkController.impl
+	subcomponents
+		DrinkInfo: thread DrinkInfoThread.impl;
+		Drink: thread DrinkThread.impl;
+		Monitor: thread MonitorThread.impl;
 end DrinkController.impl;
+
+thread DrinkInfoThread
+end DrinkInfoThread;
+
+thread implementation DrinkInfoThread.impl
+end DrinkInfoThread.impl;
+
+thread DrinkThread
+end DrinkThread;
+
+thread implementation DrinkThread.impl
+end DrinkThread.impl;
+
+thread MonitorThread
+end MonitorThread;
+
+thread implementation MonitorThread.impl
+end MonitorThread.impl;
 	
 end Software;
