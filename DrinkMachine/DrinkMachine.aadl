@@ -1,0 +1,18 @@
+package DrinkMachine
+public
+	
+system DrinkMachineSystem
+	
+	
+end DrinkMachineSystem;
+
+
+system implementation DrinkMachineSystem.impl
+	
+	
+	
+end DrinkMachineSystem.impl;
+	
+	
+	
+end DrinkMachine;
