@@ -1,0 +1,38 @@
+Automat do tworzenia drinków
+Kamil Barszczak, kbarszczak@student.agh.edu.pl
+Projekt przedstawia architekturę automatu do tworzenia drinków. Drinki podawane są w szklankach po uprzednim odpowiednim przygotowaniu. Każdy drink przechodzi przez procedurę kompletowania składników oraz ich mieszania po czym zostaje podany użytkownikowi.
+Spis komponentów (Łącznie 29 komponentów):
+MainController - proces odpowiedzialny za sterowanie pozostałymi procesami
+PaymentController - proces odpowiedzialny za płatność
+DrinkController - proces odpowiedzialny za przygotowanie napoju
+DrinkVerifier - wątek odpowiedzialny za zweryfikowanie informacji na temat dostępności składników potrzebnych do wykonania drinka
+PayThread - wątek odpowiedzialny za przekazanie informacji do procesu płatności oraz do wątku tworzenia drinka
+DrinkThread - wątek odpowiedzialny za przekazanie informacji do procesu tworzenia drinka
+Cash - wątek odpowiedzialny za obsługę urządzenia do płatności gotówką
+Card - wątek odpowiedzialny za obsługę urządzenia do płatności kartą
+PaymentProcessing - wątek odpowiedzialny za sterowanie procesem płatności
+Monitor - wątek odpowiedzialny za nadzorowanie procesu przygotowywania drinka
+DrinkInfo - wątek odpowiedzialny za zweryfikowanie dostępności składników
+Drink - wątek odpowiedzialny za tworzenie drinka
+Panel - urządzenie, którego zadaniem jest odczytanie poleceń użytkownika
+CardDev - czytnik kart
+CashDev - urządzenie pobierające opłatę w gotówce
+CashOutDev - urządzenie wydające reszte
+ShakerDev - urządzenie mieszające składniki napoju
+FeederDev - urządzenie pobierające składniki z magazynu, przekazuje składniki do Shakera
+GlassSens - czujnik sprawdzający czy szklanka na napój została podstawiona
+IngredientSens - czujnik sprawdzający ilość dostępnych składników
+MainProc - główny procesor sterujący całym systemem
+PayProc - procesor odpowiedzialny za sterowanie płatnością
+DrinkProc - procesor odpowiedzialny za sterowanie procesem tworzenia drinka
+MainMem - pamięć głównego procesora
+PayMem - pamięć procesora od płatności
+DrinkMem - pamięć procesora od drinków
+MainBus - główna magistrala
+PayBus - magistrala płatności spinająca urządzenia za nią odpowiedzialne
+DrinkBus - magistrala łącząca urządzenia odpowiedzialne za tworzenie napoju
+Proponowane metody analizy modelu, dostępne w Osate. Model został poddany następującym analizom:
+ARINC429 Connection Consistency Report: 0 błędów
+Port Connection Consistency Report: 0 błędów
+Check Binding Constraints: 0 błędów
+UnhandledFaults Report: 0 błędów
