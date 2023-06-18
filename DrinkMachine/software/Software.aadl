@@ -97,7 +97,6 @@ process PayController
 		CashReq: out data port;--
 		CashChange: out data port; --
 		Finished: out event port;--
-		
 end PayController;
 
 process implementation PayController.impl
@@ -105,21 +104,53 @@ process implementation PayController.impl
 		PaymentProcessing: thread PaymentProcessingThread.impl;
 		Cash: thread CashThread.impl;
 		Card: thread CardThread.impl;
+		
+	connections
+		M2Method: port Method -> PaymentProcessing.Method;
+		M2Amount: port Amount -> PaymentProcessing.Amount;
+		PP2CashTread: port PaymentProcessing.AmountOut -> Cash.Amount;
+		PP2CardTread: port PaymentProcessing.AmountOut -> Card.Amount;
+		C2CashReq: port Cash.CashReq -> CashReq;
+		CashData2C: port CashData -> Cash.CashData;
+		C2CashChange: port Cash.CashChange -> CashChange;
+		C2PP: port Cash.Done -> PaymentProcessing.Done;
+		PP2Finished: port PaymentProcessing.DoneOut -> Finished;
+		C2CardReq: port Card.CardReq -> CardReq;
+		CardData2C: port CardData -> Card.CardData;
+		Card2PP: port Card.Done -> PaymentProcessing.Done;
+		
 end PayController.impl;
 
 thread PaymentProcessingThread
+	features
+		Method: in data port;
+		Amount: in data port;
+		AmountOut: out data port;
+		Done: in event port;
+		DoneOut: out event port;
 end PaymentProcessingThread;
 
 thread implementation PaymentProcessingThread.impl
 end PaymentProcessingThread.impl;
 
 thread CashThread
+	features
+		Amount: in data port;
+		CashReq: out data port;
+		CashData: in data port;
+		CashChange: out data port;
+		Done: out event port;
 end CashThread;
 
 thread implementation CashThread.impl
 end CashThread.impl;
 
 thread CardThread
+	features
+		Amount: in data port;
+		Done: out event port;
+		CardReq: out data port;
+		CardData: in data port;
 end CardThread;
 
 thread implementation CardThread.impl
@@ -152,21 +183,65 @@ process implementation DrinkController.impl
 		DrinkInfo: thread DrinkInfoThread.impl;
 		Drink: thread DrinkThread.impl;
 		Monitor: thread MonitorThread.impl;
+		
+	connections
+		CheckDrink2DI: port CheckDrink -> DrinkInfo.CheckDrink;
+		DI2Ingr: port DrinkInfo.CheckIngrOut -> CheckIngrStatus;
+		IngrStatus2DI: port IngrStatus -> DrinkInfo.CheckIngrIn;
+		DI2DrinkIngrStatus: port DrinkInfo.DrinkIngrStatus -> DrinkIngrStatus;
+		DI2DrinkPrice: port DrinkInfo.DrinkPrice -> DrinkPrice;
+		DI2D: port DrinkInfo.IngrListOut -> Drink.IngrListIn;
+		D2DI: port Drink.IngrListOut -> DrinkInfo.IngrListIn;
+		MakeDrink2D: port MakeDrink -> Drink.MakeDrink;
+		D2DrinkReady: port Drink.DrinkReady -> DrinkReady;
+		D2M: port Drink.DrinkData -> Monitor.DrinkData;
+		D2MReady: port Monitor.DrinkReady -> Drink.DrinkReadyIn;
+		Shake2M: port ShakeStatus -> Monitor.ShakeIngrIn;
+		Feed2M: port FeedStatus -> Monitor.FeedIngrIn;
+		Glass2M: port GlassStatus -> Monitor.CheckGlassIn;
+		M2Shake: port Monitor.ShakeIngr -> ShakeIngr;
+		M2Feed: port Monitor.FeedIngr -> FeedIngr;
+		M2Glass: port Monitor.CheckGlass -> CheckGlass;
 end DrinkController.impl;
 
 thread DrinkInfoThread
+	features
+		CheckDrink: in data port;
+		CheckIngrOut: out data port;
+		CheckIngrIn: in data port;
+		DrinkIngrStatus: out event port;
+		IngrListOut: out data port;
+		IngrListIn: in data port;
+		DrinkPrice: out data port;
 end DrinkInfoThread;
 
 thread implementation DrinkInfoThread.impl
 end DrinkInfoThread.impl;
 
 thread DrinkThread
+	features
+		IngrListOut: out data port;
+		IngrListIn: in data port;
+		MakeDrink: in data port;
+		DrinkReady: out event port;
+		DrinkData: out data port;
+		DrinkReadyIn: in data port;
 end DrinkThread;
 
 thread implementation DrinkThread.impl
 end DrinkThread.impl;
 
 thread MonitorThread
+	features
+		DrinkData: in data port;
+		DrinkReady: out data port;
+		FeedIngr: out data port;
+		CheckGlass: out data port;
+		ShakeIngr: out data port;
+		FeedIngrIn: in event port;
+		CheckGlassIn: in event port;
+		ShakeIngrIn: in event port;
+		
 end MonitorThread;
 
 thread implementation MonitorThread.impl
