@@ -1,6 +1,16 @@
 package Hardware
 public
 	
+with Base_Types;
+with data_model;
+
+-- custom data
+data Request
+	properties
+		Data_Model::Data_Representation => String;
+		Data_Model::Number_Representation => Unsigned;
+end Request;
+	
 -- Main controller components
 bus MainBus	
 end MainBus;
@@ -28,8 +38,8 @@ end MainProc.impl;
 
 device Panel
 	features
-		PayMethod: out data port; --
-		NumDrink: out data port; --
+		PayMethod: out data port Base_Types::Integer; --
+		NumDrink: out data port Base_Types::Integer; --
 		DrinkReady: in event port; --
 		BAM: requires bus access MainBus.impl; --
 end Panel;
@@ -62,8 +72,8 @@ end PayProc.impl;
 
 device CardReader
 	features
-		CardReq: in data port;--
-		CashAmount: out data port; --s
+		CardReq: in data port Request;--
+		CashAmount: out data port Base_Types::Integer; --
 		BAP: requires bus access PayBus.impl;
 end CardReader;
 
@@ -72,8 +82,8 @@ end CardReader.impl;
 
 device CashIn
 	features
-		CashReq: in data port; --
-		CashAmount: out data port; --
+		CashReq: in data port Request; --
+		CashAmount: out data port Base_Types::Integer; --
 		BAP: requires bus access PayBus.impl;
 end CashIn;
 
@@ -82,7 +92,7 @@ end CashIn.impl;
 
 device CashOut
 	features
-		CashOut: in data port; --
+		CashOut: in data port Base_Types::Integer; --
 		BAP: requires bus access PayBus.impl;
 end CashOut;
 
@@ -115,7 +125,7 @@ end DrinkProc.impl;
 
 device GlassSensor
 	features
-		GlassCheck: in data port;--
+		GlassCheck: in data port Base_Types::Integer;--
 		GlassStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end GlassSensor;
@@ -125,8 +135,8 @@ end GlassSensor.impl;
 
 device IngredientSensor
 	features
-		CheckStatus: in data port;--
-		IngrStatus: out data port;--
+		CheckStatus: in data port Base_Types::Integer;--
+		IngrStatus: out data port Base_Types::Integer;--
 		BAD: requires bus access DrinkBus.impl;
 end IngredientSensor;
 
@@ -135,7 +145,7 @@ end IngredientSensor.impl;
 
 device Shaker
 	features
-		ShakeIngr: in data port;--
+		ShakeIngr: in data port Base_Types::Integer;--
 		ShakeStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end Shaker;
@@ -145,7 +155,7 @@ end Shaker.impl;
 
 device Feeder
 	features
-		FeedIngr: in data port;--
+		FeedIngr: in data port Base_Types::Integer;--
 		FeedStatus: out event port;--
 		BAD: requires bus access DrinkBus.impl;
 end Feeder;

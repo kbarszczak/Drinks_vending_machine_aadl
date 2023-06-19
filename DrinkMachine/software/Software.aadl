@@ -1,22 +1,25 @@
 package Software
 public
 	
+with Base_Types;
+with Hardware;
+	
 -- Main controller components
 process MainController
 	features
 		-- in ports
-		PayMethod: in data port;--
-		NumDrink: in data port;--
+		PayMethod: in data port Base_Types::Integer;--
+		NumDrink: in data port Base_Types::Integer;--
 		Paid: in event port;--
 		DrinkIngrStatus: in event port;--
-		DrinkPrice: in data port;--
+		DrinkPrice: in data port Base_Types::Integer;--
 		DrinkReady: in event port;--
 		
 		-- out ports
-		CheckDrink: out data port;--
-		PayModMethod: out data port;--
-		PayModAmount: out data port;--
-		MakeDrink: out data port;--
+		CheckDrink: out data port Base_Types::Integer;--
+		PayModMethod: out data port Base_Types::Integer;--
+		PayModAmount: out data port Base_Types::Integer;--
+		MakeDrink: out data port Base_Types::Integer;--
 		Finished: out event port;--
 
 end MainController;
@@ -47,10 +50,10 @@ end MainController.impl;
 
 thread PaymentThread
 	features
-		DrinkInfo: in data port;
-		PanelMethod: in data port;
-		Price: out data port;
-		Method: out data port;
+		DrinkInfo: in data port Base_Types::Integer;
+		PanelMethod: in data port Base_Types::Integer;
+		Price: out data port Base_Types::Integer;
+		Method: out data port Base_Types::Integer;
 		Paid: in event port;
 		PrepareDrink: out event port;
 end PaymentThread;
@@ -61,8 +64,8 @@ end PaymentThread.impl;
 thread DrinkExecutorThread
 	features
 		Prepare: in event port;
-		DrinkInfo: in data port;
-		DrinkMake: out data port;
+		DrinkInfo: in data port Base_Types::Integer;
+		DrinkMake: out data port Base_Types::Integer;
 		DrinkFinished: in event port;
 		Finalize: out event port;
 end DrinkExecutorThread;
@@ -72,11 +75,11 @@ end DrinkExecutorThread.impl;
 
 thread DrinkVerifierThread
 	features
-		NumDrink: in data port;
+		NumDrink: in data port Base_Types::Integer;
 		DrinkIngrStatus: in event port;
-		DrinkPrice: in data port;
-		DrinkCheck: out data port;
-		DrinkInfo: out data port;
+		DrinkPrice: in data port Base_Types::Integer;
+		DrinkCheck: out data port Base_Types::Integer;
+		DrinkInfo: out data port Base_Types::Integer;
 end DrinkVerifierThread;
 
 thread implementation DrinkVerifierThread.impl
@@ -87,15 +90,15 @@ end DrinkVerifierThread.impl;
 process PayController
 	features
 		-- in ports
-		Method: in data port;--
-		Amount: in data port;--
-		CardData: in data port; --
-		CashData: in data port; --
+		Method: in data port Base_Types::Integer;--
+		Amount: in data port Base_Types::Integer;--
+		CardData: in data port Base_Types::Integer; --
+		CashData: in data port Base_Types::Integer; --
 		
 		-- out ports
-		CardReq: out data port;--
-		CashReq: out data port;--
-		CashChange: out data port; --
+		CardReq: out data port Hardware::Request;--
+		CashReq: out data port Hardware::Request;--
+		CashChange: out data port Base_Types::Integer; --
 		Finished: out event port;--
 end PayController;
 
@@ -123,9 +126,9 @@ end PayController.impl;
 
 thread PaymentProcessingThread
 	features
-		Method: in data port;
-		Amount: in data port;
-		AmountOut: out data port;
+		Method: in data port Base_Types::Integer;
+		Amount: in data port Base_Types::Integer;
+		AmountOut: out data port Base_Types::Integer;
 		Done: in event port;
 		DoneOut: out event port;
 end PaymentProcessingThread;
@@ -135,10 +138,10 @@ end PaymentProcessingThread.impl;
 
 thread CashThread
 	features
-		Amount: in data port;
-		CashReq: out data port;
-		CashData: in data port;
-		CashChange: out data port;
+		Amount: in data port Base_Types::Integer;
+		CashReq: out data port Hardware::Request;
+		CashData: in data port Base_Types::Integer;
+		CashChange: out data port Base_Types::Integer;
 		Done: out event port;
 end CashThread;
 
@@ -147,10 +150,10 @@ end CashThread.impl;
 
 thread CardThread
 	features
-		Amount: in data port;
+		Amount: in data port Base_Types::Integer;
 		Done: out event port;
-		CardReq: out data port;
-		CardData: in data port;
+		CardReq: out data port Hardware::Request;
+		CardData: in data port Base_Types::Integer;
 end CardThread;
 
 thread implementation CardThread.impl
@@ -160,9 +163,9 @@ end CardThread.impl;
 process DrinkController
 	features
 		-- in ports
-		CheckDrink: in data port;--
-		MakeDrink: in data port;--
-		IngrStatus: in data port;--
+		CheckDrink: in data port Base_Types::Integer;--
+		MakeDrink: in data port Base_Types::Integer;--
+		IngrStatus: in data port Base_Types::Integer;--
 		FeedStatus: in event port;--
 		ShakeStatus: in event port;--
 		GlassStatus: in event port;--
@@ -170,11 +173,11 @@ process DrinkController
 		-- out ports
 		DrinkIngrStatus: out event port;--
 		DrinkReady: out event port;--
-		DrinkPrice: out data port;--
-		CheckIngrStatus: out data port;--
-		FeedIngr: out data port;--
-		ShakeIngr: out data port;--
-		CheckGlass: out data port;--
+		DrinkPrice: out data port Base_Types::Integer;--
+		CheckIngrStatus: out data port Base_Types::Integer;--
+		FeedIngr: out data port Base_Types::Integer;--
+		ShakeIngr: out data port Base_Types::Integer;--
+		CheckGlass: out data port Base_Types::Integer;--
 		
 end DrinkController;
 
@@ -206,13 +209,13 @@ end DrinkController.impl;
 
 thread DrinkInfoThread
 	features
-		CheckDrink: in data port;
-		CheckIngrOut: out data port;
-		CheckIngrIn: in data port;
+		CheckDrink: in data port Base_Types::Integer;
+		CheckIngrOut: out data port Base_Types::Integer;
+		CheckIngrIn: in data port Base_Types::Integer;
 		DrinkIngrStatus: out event port;
-		IngrListOut: out data port;
-		IngrListIn: in data port;
-		DrinkPrice: out data port;
+		IngrListOut: out data port Base_Types::Integer;
+		IngrListIn: in data port Base_Types::Integer;
+		DrinkPrice: out data port Base_Types::Integer;
 end DrinkInfoThread;
 
 thread implementation DrinkInfoThread.impl
@@ -220,12 +223,12 @@ end DrinkInfoThread.impl;
 
 thread DrinkThread
 	features
-		IngrListOut: out data port;
-		IngrListIn: in data port;
-		MakeDrink: in data port;
+		IngrListOut: out data port Base_Types::Integer;
+		IngrListIn: in data port Base_Types::Integer;
+		MakeDrink: in data port Base_Types::Integer;
 		DrinkReady: out event port;
-		DrinkData: out data port;
-		DrinkReadyIn: in data port;
+		DrinkData: out data port Base_Types::Integer;
+		DrinkReadyIn: in data port Base_Types::Integer;
 end DrinkThread;
 
 thread implementation DrinkThread.impl
@@ -233,11 +236,11 @@ end DrinkThread.impl;
 
 thread MonitorThread
 	features
-		DrinkData: in data port;
-		DrinkReady: out data port;
-		FeedIngr: out data port;
-		CheckGlass: out data port;
-		ShakeIngr: out data port;
+		DrinkData: in data port Base_Types::Integer;
+		DrinkReady: out data port Base_Types::Integer;
+		FeedIngr: out data port Base_Types::Integer;
+		CheckGlass: out data port Base_Types::Integer;
+		ShakeIngr: out data port Base_Types::Integer;
 		FeedIngrIn: in event port;
 		CheckGlassIn: in event port;
 		ShakeIngrIn: in event port;
